@@ -1,0 +1,6 @@
+onnxruntime
+opencv-python
+pycocotools
+torch
+tqdm
+shapely
