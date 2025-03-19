@@ -61,9 +61,9 @@ def coco_to_label_studio_format(coco_json_path, output_json_path):
     # return label_studio_data
 
 # Example usage:
-coco_annoation_path = "/Users/bhavish/Downloads/rbc_plt_annotations/Sigvet_rbc_data_Recon/rbc_image_test_input_folder/yolo-results_rbc_plt_coco.json"
+coco_annoation_path = "/Users/bhavish/rbc_plt_annotations/sigvet_rbc_recon_data/yolo-results_rbc_plt_coco.json"
 
-coco_to_label_studio_format(coco_annoation_path, "/Users/bhavish/Downloads/rbc_plt_annotations/Sigvet_rbc_data_Recon/rbc_image_test_input_folder/adaptive_label.json")
+coco_to_label_studio_format(coco_annoation_path, "/Users/bhavish/rbc_plt_annotations/sigvet_rbc_recon_data/model_output_label.json")
 
 
 

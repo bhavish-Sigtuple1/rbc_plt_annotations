@@ -2,8 +2,8 @@ import cv2, os, pickle
 from glob import glob
 import numpy as np
 
-img_path = '/Users/bhavish/Downloads/rbc_plt_annotations/Sigvet_rbc_data_Recon/Recon_data_1'
-des_dir_extractor = "/Users/bhavish/Downloads/rbc_plt_annotations/Sigvet_rbc_data_Recon/Recon_data_1_output"
+img_path = '/Users/bhavish/rbc_plt_annotations/Recon_data_2'
+des_dir_extractor = "/Users/bhavish/rbc_plt_annotations/des_dir_path"
 os.makedirs(des_dir_extractor, exist_ok=True)
 
 all_files = os.listdir(img_path)

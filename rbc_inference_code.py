@@ -11,8 +11,8 @@ from sahi.predict import get_sliced_prediction
 from typing import Any, Dict, List, Optional
 
 # Model and directories
-model_path = "/Users/bhavish/Downloads/rbc_plt_annotations/RBC_PLT_ANN_codes/Models/rbc_plt_iter_1.2.onnx"
-input_folder = "/Users/bhavish/Downloads/rbc_plt_annotations/Sigvet_rbc_data_Recon/rbc_image_test_input_folder"
+model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_1.2.onnx"
+input_folder = "/Users/bhavish/rbc_plt_annotations/sigvet_rbc_recon_data"
 test_img_dir = f"{input_folder}/small_patches"
 dst_path = f"{input_folder}/yolo-results"
 output_csv_path = f"{input_folder}/yolo-results.csv"
@@ -201,6 +201,8 @@ def extract_cells():
         
         for idx, img_path in enumerate(files):
             img_name = os.path.basename(img_path)
+            if img_name == ".DS_Store":
+                continue
             img = cv2.imread(os.path.join(test_img_dir, img_path))
             org_img = img.copy()
             img = cv2.resize(img, (0, 0), fx=scale, fy=scale)
