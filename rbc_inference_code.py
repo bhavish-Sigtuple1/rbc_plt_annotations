@@ -12,7 +12,7 @@ from typing import Any, Dict, List, Optional
 
 # Model and directories
 model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_1.2.onnx"
-input_folder = "/Users/bhavish/rbc_plt_annotations/sigvet_rbc_recon_data"
+input_folder = "/Users/bhavish/rbc_plt_annotations/destination_dir"
 test_img_dir = f"{input_folder}/small_patches"
 dst_path = f"{input_folder}/yolo-results"
 output_csv_path = f"{input_folder}/yolo-results.csv"

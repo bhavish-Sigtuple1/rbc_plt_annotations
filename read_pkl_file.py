@@ -75,7 +75,7 @@ wl_img_2 = wl_img * ratio
 wl_img_2[wl_img_2>(2**bit_depth-1)] = 2**bit_depth - 1
 
 false_colored_image = np.zeros((np.shape(uv_img)+ (3,)), dtype=np.uint8)
-false_colored_image[:,:,0] = img
+false_colored_image[:,:,0] = wl_img_2
 false_colored_image[:,:,1] = uv_img
 false_colored_image[:,:,2] = uv_img
 

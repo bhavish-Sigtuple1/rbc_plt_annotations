@@ -4,8 +4,8 @@ import os
 import numpy as np
 
 # Path to the directory containing images and the COCO JSON file
-img_dir = "/Users/bhavish/rbc_plt_annotations/sigvet_rbc_recon_data/dog_sample_project-58-at-2025-03-19-09-03-e02a78bd/images"   
-json_file = "/Users/bhavish/rbc_plt_annotations/sigvet_rbc_recon_data/dog_sample_project-58-at-2025-03-19-09-03-e02a78bd/result.json"
+img_dir = "/Users/bhavish/rbc_plt_annotations/project_1-at-2025-03-25-04-44-bbbea42d/images"   
+json_file = "/Users/bhavish/rbc_plt_annotations/project_1-at-2025-03-25-04-44-bbbea42d/result.json"
 
 # Load the COCO JSON data
 with open(json_file, "r") as f:
@@ -16,7 +16,7 @@ category_colors = {
     0: (0, 255, 255),     # Yellow for "plt"
     1: (255, 0, 0),     # Blue for "plt-clump"
     2: (0, 0, 255),      # Red for "rbc"
-    3: (0,255,0)
+    3: (0,255,0)         # green for "wbc"
 }
 
 # Create a dictionary mapping category ID to name
