@@ -11,26 +11,28 @@ from sahi.predict import get_sliced_prediction
 from typing import Any, Dict, List, Optional
 
 # Model and directories
-model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_1.2.onnx"
-input_folder = "/Users/bhavish/rbc_plt_annotations/destination_dir"
-test_img_dir = f"{input_folder}/small_patches"
-dst_path = f"{input_folder}/yolo-results"
-output_csv_path = f"{input_folder}/yolo-results.csv"
-output_json_path = f"{input_folder}/yolo-results_rbc_plt_coco.json"
+model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_3.onnx"
+input_folder = "/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/06ba4122-b7cc-4a6b-af8e-7c2544988f74"
+test_img_dir = f"{input_folder}/output_816"
+dst_path = f"{input_folder}/yolo-results1"
+output_csv_path = f"{input_folder}/yolo-results1.csv"
+output_json_path = f"{input_folder}/yolo-results_rbc_plt_coco1.json"
 
 # Class and color mappings
-class_mapping = {"0": "plt", "1": "plt-clump", "2": "rbc"}
+class_mapping = {"0": "plt", "1": "plt-clump", "2": "rbc", "3":"wbc"}
 color_mapping = {
     "0": (0, 255, 255),    # Yellow for plt
     "1": (255, 0, 0),      # Blue for plt-clump
-    "2": (0, 0, 255)       # Red for rbc
+    "2": (0, 0, 255),       # Red for rbc
+    "3": (0,255,0)          # Green for wbc
 }
 
 # Define class-wise confidence thresholds
 class_confidence_thresholds = {
-    0: 0.0,  # Threshold for class 'plt'
+    0: 0.1,  # Threshold for class 'plt'
     1: 0.0,  # Threshold for class 'plt-clump'
-    2: 0.0   # Threshold for class 'rbc'
+    2: 0.5,   # Threshold for class 'rbc'
+    3: 0.0 
 }
 
 # YOLOX ONNX Wrapper Class
@@ -118,7 +120,7 @@ bbox_aspect_ratio_threshold = 1.75
 # Function to save detection counts to CSV
 def save_detection_counts_to_csv(image_data, output_csv_path):
     # Define the header for the CSV
-    header = ['Image_Name', 'plt_count', 'plt-clump_count', 'rbc_count']
+    header = ['Image_Name', 'plt_count', 'plt-clump_count', 'rbc_count', 'wbc_count']
     
     # Open the CSV file in write mode
     with open(output_csv_path, mode='w', newline='') as file:
@@ -141,7 +143,8 @@ def save_prediction_to_coco_json(image_data, output_json_path):
         "categories": [
             {"id": 1, "name": "plt", "supercategory": "cell"},
             {"id": 2, "name": "plt-clump", "supercategory": "cell"},
-            {"id": 3, "name": "rbc", "supercategory": "cell"}
+            {"id": 3, "name": "rbc", "supercategory": "cell"},
+            {"id": 4, "name": "wbc", "supercategory": "cell"}
         ],
         "images": [],
         "annotations": []

@@ -5,7 +5,7 @@ def coco_to_label_studio_format(coco_json_path, output_json_path):
         coco_json = json.load(f)
 
     label_studio_data = []
-    category_mapping = {1: "plt",2: "plt-clump",3: "rbc"}
+    category_mapping = {1: "plt",2: "plt-clump",3: "rbc",4: "wbc"}
     for image_info in coco_json['images']:
         image_id = image_info['id']
         annotations_for_image = [ann for ann in coco_json['annotations'] if ann['image_id'] == image_id]
@@ -61,9 +61,9 @@ def coco_to_label_studio_format(coco_json_path, output_json_path):
     # return label_studio_data
 
 # Example usage:
-coco_annoation_path = "/Users/bhavish/rbc_plt_annotations/destination_dir/yolo-results_rbc_plt_coco.json"
+coco_annoation_path = "/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/06ba4122-b7cc-4a6b-af8e-7c2544988f74/yolo-results_rbc_plt_coco.json"
 
-coco_to_label_studio_format(coco_annoation_path, "/Users/bhavish/rbc_plt_annotations/destination_dir/model_output_label.json")
+coco_to_label_studio_format(coco_annoation_path, "/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/06ba4122-b7cc-4a6b-af8e-7c2544988f74/model_output_label.json")
 
 
 

@@ -34,13 +34,13 @@ def plot_channel_histogram(image):
     
 def cal_I0_otsu_mapping(img):
     img = np.uint8(img)
-    _, binary = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    _, binary = cv2.threshold(img, 0, 140, cv2.THRESH_BINARY)
     if np.count_nonzero(binary)==0:
         return 255
     return np.sum(img * (binary / 255)) / np.count_nonzero(binary)
 
-img_path = '/Users/bhavish/rbc_plt_annotations/Recon_data'
-des_dir_extractor = "/Users/bhavish/rbc_plt_annotations/destination_dir/output_816.py"
+img_path = '/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/06ba4122-b7cc-4a6b-af8e-7c2544988f74/Recon_data'
+des_dir_extractor = "/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/06ba4122-b7cc-4a6b-af8e-7c2544988f74/output_816"
 os.makedirs(des_dir_extractor, exist_ok=True)
 
 all_files = os.listdir(img_path)
@@ -54,8 +54,8 @@ for pkl_file in all_files:
     fov = pkl_data.get('BestFocusedFalseColoredRBCImage')
     wl_img = fov[:,:,0]
     uv_img = fov[:,:,1]
-    wl_I0 = plot_channel_histogram(wl_img)
-    uv_I0 = plot_channel_histogram(uv_img)
+    wl_I0 = cal_I0_otsu_mapping(wl_img)
+    uv_I0 = cal_I0_otsu_mapping(uv_img)
     ratio = uv_I0/wl_I0
     wl_img = wl_img * ratio
     wl_img[wl_img>(255)] = 255
