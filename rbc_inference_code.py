@@ -12,10 +12,10 @@ from typing import Any, Dict, List, Optional
 
 # Model and directories
 model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_3.onnx"
-input_folder = "/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/06ba4122-b7cc-4a6b-af8e-7c2544988f74"
-test_img_dir = f"{input_folder}/output_816"
+input_folder = "/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/72f01cee-6597-4069-83e9-0f50acb889c9"
+test_img_dir = f"{input_folder}/small_patches"
 dst_path = f"{input_folder}/yolo-results1"
-output_csv_path = f"{input_folder}/yolo-results1.csv"
+output_csv_path = f"{input_folder}/yolo-results.csv"
 output_json_path = f"{input_folder}/yolo-results_rbc_plt_coco1.json"
 
 # Class and color mappings

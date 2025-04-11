@@ -39,8 +39,8 @@ def cal_I0_otsu_mapping(img):
         return 255
     return np.sum(img * (binary / 255)) / np.count_nonzero(binary)
 
-img_path = '/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/06ba4122-b7cc-4a6b-af8e-7c2544988f74/Recon_data'
-des_dir_extractor = "/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/06ba4122-b7cc-4a6b-af8e-7c2544988f74/output_816"
+img_path = '/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/72f01cee-6597-4069-83e9-0f50acb889c9/Recon_data'
+des_dir_extractor = "/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/72f01cee-6597-4069-83e9-0f50acb889c9/output_816"
 os.makedirs(des_dir_extractor, exist_ok=True)
 
 all_files = os.listdir(img_path)

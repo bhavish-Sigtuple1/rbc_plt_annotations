@@ -55,12 +55,10 @@ def merge_coco_json(json_paths, output_path):
 
 
 
-json_paths = ['/Users/sasikiranp/Desktop/Sigvet_Annotations_Complete/RBC_PLT/Canine/canine_rbc_plt_iter_3/Canine_RBC_PLT_Bruno/result.json',
-              '/Users/sasikiranp/Desktop/Sigvet_Annotations_Complete/RBC_PLT/Canine/canine_rbc_plt_iter_3/Canine_RBC_PLT_Snow/result.json',
-              '/Users/sasikiranp/Desktop/Sigvet_Annotations_Complete/RBC_PLT/Canine/canine_rbc_plt_iter_3/Canine_RBC_PLT_Tiny/result.json',
-              '/Users/sasikiranp/Desktop/Sigvet_Annotations_Complete/RBC_PLT/Canine/canine_rbc_plt_iter_3/Canine_RBC_PLT_Twinkle/result.json',
-              '/Users/sasikiranp/Desktop/Sigvet_Annotations_Complete/RBC_PLT/Canine/canine_rbc_plt_iter_3/Canine_RBC_PLT_Vihan/result.json',
+json_paths = ['/Users/bhavish/rbc_plt_annotations/RBC_Iter_4_Data/project_1_62-at-2025-04-03-06-59-641c6b08/result.json',
+              '/Users/bhavish/rbc_plt_annotations/RBC_Iter_4_Data/project_2-at-2025-04-08-12-09-474ad22c/result.json',
+              '/Users/bhavish/rbc_plt_annotations/RBC_Iter_4_Data/project_3-at-2025-04-10-12-40-20c3053a/result.json'
               ]
-output_path = "/Users/sasikiranp/Desktop/Sigvet_Annotations_Complete/RBC_PLT/Canine/canine_rbc_plt_iter_3/rbc_plt_iter_3/train2017.json"
+output_path = "/Users/bhavish/Desktop/RBC_Iter_4_Data/RBC_Iter_4_Data/train2017.json"
 
 merge_coco_json(json_paths, output_path)

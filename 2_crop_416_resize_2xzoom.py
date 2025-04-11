@@ -3,8 +3,8 @@ import os
 import numpy as np
 
 
-img_path = "/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/06ba4122-b7cc-4a6b-af8e-7c2544988f74/output_816"
-des_dir_extractor = "/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/06ba4122-b7cc-4a6b-af8e-7c2544988f74/output_2x_416"     
+img_path = "/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/72f01cee-6597-4069-83e9-0f50acb889c9/output_816"
+des_dir_extractor = "/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/72f01cee-6597-4069-83e9-0f50acb889c9/output_data_412_x2"     
 os.makedirs(des_dir_extractor, exist_ok=True)
 
 # Get all files from img_path
