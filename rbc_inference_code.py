@@ -3,6 +3,7 @@ import os
 import time
 import cv2
 import numpy as np
+import pandas as pd
 import csv
 from sahi.prediction import ObjectPrediction
 from sahi.base import DetectionModel
@@ -11,12 +12,12 @@ from sahi.predict import get_sliced_prediction
 from typing import Any, Dict, List, Optional
 
 # Model and directories
-model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_3.onnx"
-input_folder = "/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/72f01cee-6597-4069-83e9-0f50acb889c9"
-test_img_dir = f"{input_folder}/small_patches"
-dst_path = f"{input_folder}/yolo-results1"
+model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_5.onnx"
+input_folder = "/Users/bhavish/Desktop/Rbc_plt_iter_6"
+test_img_dir = f"{input_folder}/wbc_folder"
+dst_path = f"{input_folder}/yolo-results"
 output_csv_path = f"{input_folder}/yolo-results.csv"
-output_json_path = f"{input_folder}/yolo-results_rbc_plt_coco1.json"
+output_json_path = f"{input_folder}/yolo-results_rbc_plt_coco.json"
 
 # Class and color mappings
 class_mapping = {"0": "plt", "1": "plt-clump", "2": "rbc", "3":"wbc"}
@@ -31,7 +32,7 @@ color_mapping = {
 class_confidence_thresholds = {
     0: 0.1,  # Threshold for class 'plt'
     1: 0.0,  # Threshold for class 'plt-clump'
-    2: 0.5,   # Threshold for class 'rbc'
+    2: 0.2,   # Threshold for class 'rbc'
     3: 0.0 
 }
 
@@ -132,7 +133,8 @@ def save_detection_counts_to_csv(image_data, output_csv_path):
             plt_count = sum(1 for box in data['boxes'] if box[4] == 0)  # Count class 0 (plt)
             plt_clump_count = sum(1 for box in data['boxes'] if box[4] == 1)  # Count class 1 (plt-clump)
             rbc_count = sum(1 for box in data['boxes'] if box[4] == 2)  # Count class 2 (rbc)
-            writer.writerow([img_name, plt_count, plt_clump_count, rbc_count])
+            wbc_count = sum(1 for box in data['boxes'] if box[4] == 3)  # Count class 3 (wbc)
+            writer.writerow([img_name, plt_count, plt_clump_count, rbc_count, wbc_count])
 
 # Function to save prediction bbox and class to COCO JSON
 def save_prediction_to_coco_json(image_data, output_json_path):
@@ -199,9 +201,10 @@ def save_prediction_to_coco_json(image_data, output_json_path):
 def extract_cells():
     count_1 = 0
     image_data = {}
+    images = []
+    box_info = []
     try:
         files = os.listdir(test_img_dir)
-        
         for idx, img_path in enumerate(files):
             img_name = os.path.basename(img_path)
             if img_name == ".DS_Store":
@@ -246,7 +249,9 @@ def extract_cells():
                         continue 
 
                     box = [x, y, width, height, class_id]
-
+                    box1 = [x, y, width, height]
+                    images.append(img_name)
+                    box_info.append(box1)
                     area = width * height
                     
                     boxes.append(box)
@@ -270,6 +275,9 @@ def extract_cells():
     except Exception as e:
         print(e)
     print("Total Cells Detected: ", count_1)
+    df = pd.DataFrame({'image': images,
+                        'box_info': box_info})
+    df.to_csv(os.path.join(input_folder, "result_sample.csv"), index=False)
     return image_data
 
 # Main execution
@@ -282,3 +290,5 @@ save_prediction_to_coco_json(image_data, output_json_path)
 end = time.time()
 
 print("Total execution time: ", end - start)
+
+

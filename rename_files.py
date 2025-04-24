@@ -1,8 +1,8 @@
 import os
 
 # Path to your folder containing the images
-folder_path = "/Users/bhavish/Desktop/RBC_Iter_4_Data/project_3-at-2025-04-10-12-40-20c3053a/images"
-prefix = "project_3_"  # Prefix to add to each file
+folder_path = "/Users/bhavish/Desktop/Rbc_plt_iter_6/wbc_folder"
+prefix = "wbc_folder_"  # Prefix to add to each file
 
 # Loop through all files in the folder
 for filename in os.listdir(folder_path):

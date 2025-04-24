@@ -55,10 +55,9 @@ def merge_coco_json(json_paths, output_path):
 
 
 
-json_paths = ['/Users/bhavish/rbc_plt_annotations/RBC_Iter_4_Data/project_1_62-at-2025-04-03-06-59-641c6b08/result.json',
-              '/Users/bhavish/rbc_plt_annotations/RBC_Iter_4_Data/project_2-at-2025-04-08-12-09-474ad22c/result.json',
-              '/Users/bhavish/rbc_plt_annotations/RBC_Iter_4_Data/project_3-at-2025-04-10-12-40-20c3053a/result.json'
+json_paths = ['/Users/bhavish/rbc_plt_annotations/result.json',
+              '/Users/bhavish/Desktop/Rbc_plt_iter_6/rbc_plt_iter_5/val2017.json'
               ]
-output_path = "/Users/bhavish/Desktop/RBC_Iter_4_Data/RBC_Iter_4_Data/train2017.json"
+output_path = "/Users/bhavish/Desktop/Rbc_plt_iter_6/train2017.json"
 
 merge_coco_json(json_paths, output_path)

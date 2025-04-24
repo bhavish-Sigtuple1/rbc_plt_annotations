@@ -39,8 +39,10 @@ def cal_I0_otsu_mapping(img):
         return 255
     return np.sum(img * (binary / 255)) / np.count_nonzero(binary)
 
-img_path = '/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/72f01cee-6597-4069-83e9-0f50acb889c9/Recon_data'
-des_dir_extractor = "/Users/bhavish/Desktop/Data_Recon_RBC_PLT_ANN/72f01cee-6597-4069-83e9-0f50acb889c9/output_816"
+
+
+img_path = '/Users/bhavish/Desktop/rbc_plt_iter_5_validation_study/Scanner_4/be831846-8c3c-4683-86c9-a5c4d0688eb5___f28d347f-d6ce-414d-97f1-733609f10b8c_aprl_23/Recon_data'
+des_dir_extractor = "/Users/bhavish/Desktop/rbc_plt_iter_5_validation_study/Scanner_4/be831846-8c3c-4683-86c9-a5c4d0688eb5___f28d347f-d6ce-414d-97f1-733609f10b8c_aprl_23/output_832"
 os.makedirs(des_dir_extractor, exist_ok=True)
 
 all_files = os.listdir(img_path)
@@ -48,6 +50,7 @@ all_files = os.listdir(img_path)
 idx = 0
 for pkl_file in all_files:
     src_file = os.path.join(img_path, pkl_file)
+    print(src_file,'src_file')
     with open(src_file, 'rb') as f:
         pkl_data = pickle.load(f)
     
@@ -71,25 +74,23 @@ for pkl_file in all_files:
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
     # Determine cropping coordinates (adjust as needed)
-    crop_top, crop_bottom, crop_left, crop_right = 124, 956, 304, 1136
+    # crop_top, crop_bottom, crop_left, crop_right = 124, 956, 304, 1136
+    crop_top, crop_bottom = 0, img.shape[0]    # 0 to 1080
+    crop_left, crop_right = 0, img.shape[1]
     
     # Ensure the image is large enough
-    if img.shape[0] < crop_bottom or img.shape[1] < crop_right:
-        print(f"Skipping {img_name} due to insufficient size.")
-        continue
+    # if img.shape[0] < crop_bottom or img.shape[1] < crop_right:
+    #     print(f"Skipping {img_name} due to insufficient size.")
+    #     continue
     
     # Crop and place the image into a 832x832 canvas
     cropped_image = img[crop_top:crop_bottom, crop_left:crop_right]
     
     # Create a blank image with desired dimensions
-    temp_img = np.zeros((832, 832, 3), dtype=img.dtype)
+    temp_img = np.zeros((1088, 1440, 3), dtype=img.dtype)
     
-    # Place the cropped image into the blank canvas
     temp_img[:cropped_image.shape[0], :cropped_image.shape[1]] = cropped_image
-    
-    # Save the result with a new name
     new_filename = f"{img_name[:-4]}_patch_{idx}.png"
     cv2.imwrite(os.path.join(des_dir_extractor, new_filename), temp_img)
-    
     idx += 1
     print(f"Processed {new_filename}")
