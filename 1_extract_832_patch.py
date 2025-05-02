@@ -40,15 +40,16 @@ def cal_I0_otsu_mapping(img):
     return np.sum(img * (binary / 255)) / np.count_nonzero(binary)
 
 
-
-img_path = '/Users/bhavish/Desktop/rbc_plt_iter_5_validation_study/Scanner_4/be831846-8c3c-4683-86c9-a5c4d0688eb5___f28d347f-d6ce-414d-97f1-733609f10b8c_aprl_23/Recon_data'
-des_dir_extractor = "/Users/bhavish/Desktop/rbc_plt_iter_5_validation_study/Scanner_4/be831846-8c3c-4683-86c9-a5c4d0688eb5___f28d347f-d6ce-414d-97f1-733609f10b8c_aprl_23/output_832"
+img_path = '/Users/bhavish/Desktop/plt_clump_data/Recon_data_3/Recon_data_3'
+des_dir_extractor = "/Users/bhavish/Desktop/plt_clump_data/Recon_data_3/output_832"
 os.makedirs(des_dir_extractor, exist_ok=True)
 
 all_files = os.listdir(img_path)
 
 idx = 0
 for pkl_file in all_files:
+    if pkl_file == ".DS_Store":
+        continue
     src_file = os.path.join(img_path, pkl_file)
     print(src_file,'src_file')
     with open(src_file, 'rb') as f:

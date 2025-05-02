@@ -12,10 +12,8 @@ def coco_to_label_studio_format(coco_json_path, output_json_path):
         annotations_for_image = [ann for ann in coco_json['annotations'] if ann['image_id'] == image_id]
         
         if annotations_for_image:
-            image_path = "/data/local-files/?d=wbc_folder/" + image_info['file_name']
-
+            image_path = "/data/local-files/?d=plt_clump_data/" + image_info['file_name']
             results = []
-            
             for annotation in annotations_for_image:
                 annotation_data = {
                     "id": str(annotation['id']),  # ID should be a string
@@ -66,14 +64,6 @@ def coco_to_label_studio_format(coco_json_path, output_json_path):
     # return label_studio_data
 
 # Example usage:
-coco_annoation_path = "/Users/bhavish/Desktop/Rbc_plt_iter_6/yolo-results_rbc_plt_coco.json"
-
-coco_to_label_studio_format(coco_annoation_path, "/Users/bhavish/Desktop/Rbc_plt_iter_6/label_studio.json")
-
-
-
-
-
-
-
+coco_annoation_path = "/Users/bhavish/Desktop/plt_clump_data/yolo-results_rbc_plt_coco.json"
+coco_to_label_studio_format(coco_annoation_path, "/Users/bhavish/Desktop/plt_clump_data/label_studio.json")
 

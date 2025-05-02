@@ -11,12 +11,12 @@ from sahi.predict import get_sliced_prediction
 from typing import Any, Dict, List, Optional
 
 # Model and directories
-model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_5.onnx"
-input_folder = "/Users/bhavish/Desktop/rbc_plt_iter_5_validation_study/Scanner_4/be831846-8c3c-4683-86c9-a5c4d0688eb5___f28d347f-d6ce-414d-97f1-733609f10b8c_aprl_23"
-test_img_dir = f"{input_folder}/Test_data"
-dst_path = f"{input_folder}/yolo-results"
-output_csv_path = f"{input_folder}/yolo-results.csv"
-output_json_path = f"{input_folder}/yolo-results_rbc_plt_coco1.json"
+model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_7.onnx"
+input_folder = "/Users/bhavish/Downloads/rbc/scanner-4/36356e05-f2a3-4da0-9964-0d2bed0aee33__6dde1663-d7e9-467d-ae04-ea3b8b98500a_28th__apr"
+test_img_dir = f"{input_folder}/output_832"
+dst_path = f"{input_folder}/yolo-results1"
+output_csv_path = f"{input_folder}/yolo-results1.csv"
+output_json_path = f"{input_folder}/yolo-results_rbc_plt_coco0.json"
 
 # Class and color mappings
 class_mapping = {"0": "plt", "1": "plt-clump", "2": "rbc", "3":"wbc"}
@@ -29,9 +29,9 @@ color_mapping = {
 
 # Define class-wise confidence thresholds
 class_confidence_thresholds = {
-    0: 0.1,  # Threshold for class 'plt'
+    0: 0.0,  # Threshold for class 'plt'
     1: 0.0,  # Threshold for class 'plt-clump'
-    2: 0.2,   # Threshold for class 'rbc'
+    2: 0.0,   # Threshold for class 'rbc'
     3: 0.0 
 }
 

@@ -12,9 +12,9 @@ from sahi.predict import get_sliced_prediction
 from typing import Any, Dict, List, Optional
 
 # Model and directories
-model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_5.onnx"
-input_folder = "/Users/bhavish/Desktop/Rbc_plt_iter_6"
-test_img_dir = f"{input_folder}/wbc_folder"
+model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_7.onnx"
+input_folder = "/Users/bhavish/Desktop/plt_clump_data"
+test_img_dir = f"{input_folder}/plt_clump_data"
 dst_path = f"{input_folder}/yolo-results"
 output_csv_path = f"{input_folder}/yolo-results.csv"
 output_json_path = f"{input_folder}/yolo-results_rbc_plt_coco.json"
@@ -30,9 +30,9 @@ color_mapping = {
 
 # Define class-wise confidence thresholds
 class_confidence_thresholds = {
-    0: 0.1,  # Threshold for class 'plt'
+    0: 0.0,  # Threshold for class 'plt'
     1: 0.0,  # Threshold for class 'plt-clump'
-    2: 0.2,   # Threshold for class 'rbc'
+    2: 0.0,   # Threshold for class 'rbc'
     3: 0.0 
 }
 
