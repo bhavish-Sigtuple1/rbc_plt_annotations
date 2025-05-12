@@ -40,8 +40,8 @@ def cal_I0_otsu_mapping(img):
     return np.sum(img * (binary / 255)) / np.count_nonzero(binary)
 
 
-img_path = '/Users/bhavish/Desktop/plt_clump_data/Recon_data_3/Recon_data_3'
-des_dir_extractor = "/Users/bhavish/Desktop/plt_clump_data/Recon_data_3/output_832"
+img_path = '/Users/bhavish/Documents/Plt_clump_and_plt_dual_plt/Plt_clumps_data'
+des_dir_extractor = "/Users/bhavish/Documents/Plt_clump_and_plt_dual_plt/output_832"
 os.makedirs(des_dir_extractor, exist_ok=True)
 
 all_files = os.listdir(img_path)

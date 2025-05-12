@@ -57,8 +57,8 @@
 import cv2
 import os
 import numpy as np
-img_path = "/Users/bhavish/Desktop/plt_clump_data/Recon_data_3/output_832"
-des_dir_extractor = "/Users/bhavish/Desktop/plt_clump_data/Recon_data_3/output_data_412_x2"
+img_path = "/Users/bhavish/Documents/Plt_clump_and_plt_dual_plt/output_832"
+des_dir_extractor = "/Users/bhavish/Documents/Plt_clump_and_plt_dual_plt/recon_data_2_output_2x_416"
 os.makedirs(des_dir_extractor, exist_ok=True)
 
 files = os.listdir(img_path)

@@ -2,10 +2,10 @@ import json
 import pandas as pd
 from collections import defaultdict
 
-with open('/Users/bhavish/Downloads/rbc/scanner-4/36356e05-f2a3-4da0-9964-0d2bed0aee33__6dde1663-d7e9-467d-ae04-ea3b8b98500a_28th__apr/ground_truth_result.json', 'r') as f:
+with open('/Users/bhavish/Downloads/GT_9f9d93ef-685b-4da3-95a1-d9e2a2ff3157-f54e4769-be67-44db-ad6a-3017d2a3e21a__12th__apr/ground_truth_result_real.json', 'r') as f:
     gt_data = json.load(f)
 
-with open('/Users/bhavish/Downloads/rbc/scanner-4/36356e05-f2a3-4da0-9964-0d2bed0aee33__6dde1663-d7e9-467d-ae04-ea3b8b98500a_28th__apr/yolo-results_rbc_plt_coco1.json', 'r') as f:
+with open('/Users/bhavish/Downloads/GT_9f9d93ef-685b-4da3-95a1-d9e2a2ff3157-f54e4769-be67-44db-ad6a-3017d2a3e21a__12th__apr/yolo-results_rbc_plt_coco.json', 'r') as f:
     pred_data = json.load(f)
 
 image_id_to_name = {img['id']: img['file_name'] for img in gt_data['images']}

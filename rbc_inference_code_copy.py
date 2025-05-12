@@ -11,28 +11,28 @@ from sahi.predict import get_sliced_prediction
 from typing import Any, Dict, List, Optional
 
 # Model and directories
-model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_7.onnx"
-input_folder = "/Users/bhavish/Downloads/rbc/scanner-4/36356e05-f2a3-4da0-9964-0d2bed0aee33__6dde1663-d7e9-467d-ae04-ea3b8b98500a_28th__apr"
+model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_8.onnx"
+input_folder = "/Users/bhavish/Downloads/GT_9f9d93ef-685b-4da3-95a1-d9e2a2ff3157-f54e4769-be67-44db-ad6a-3017d2a3e21a__12th__apr"
 test_img_dir = f"{input_folder}/output_832"
-dst_path = f"{input_folder}/yolo-results1"
-output_csv_path = f"{input_folder}/yolo-results1.csv"
-output_json_path = f"{input_folder}/yolo-results_rbc_plt_coco0.json"
+dst_path = f"{input_folder}/yolo-results"
+output_csv_path = f"{input_folder}/yolo-results.csv"
+output_json_path = f"{input_folder}/yolo-results_rbc_plt_coco.json"
 
 # Class and color mappings
 class_mapping = {"0": "plt", "1": "plt-clump", "2": "rbc", "3":"wbc"}
 color_mapping = {
     "0": (0, 255, 255),    # Yellow for plt
     "1": (255, 0, 0),      # Blue for plt-clump
-    "2": (0, 0, 255),       # Red for rbc
-    "3": (0,255,0)          # Green for wbc
+    "2": (0, 0, 255),      # Red for rbc
+    "3": (0,255,0)         # Green for wbc
 }
 
 # Define class-wise confidence thresholds
 class_confidence_thresholds = {
     0: 0.0,  # Threshold for class 'plt'
     1: 0.0,  # Threshold for class 'plt-clump'
-    2: 0.0,   # Threshold for class 'rbc'
-    3: 0.0 
+    2: 0.0,  # Threshold for class 'rbc'
+    3: 0.0   # Threshold for class 'wbc'
 }
 
 # YOLOX ONNX Wrapper Class
