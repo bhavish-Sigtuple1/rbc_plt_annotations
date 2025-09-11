@@ -12,28 +12,32 @@ from sahi.predict import get_sliced_prediction
 from typing import Any, Dict, List, Optional
 
 # Model and directories
-model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_8.onnx"
-input_folder = "/Users/bhavish/Downloads/rbc_feline_data/hc3/pkl"
-test_img_dir = f"{input_folder}/Recon_data_1_output_832"
-dst_path = f"{input_folder}/yolo-results__rbc_plt_iter_8"
-output_csv_path = f"{input_folder}/yolo-results.csv"
-output_json_path = f"{input_folder}/yolo-results_rbc_plt_coco.json"
+model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_11.onnx"
+input_folder = "/Users/bhavish/Documents/Data_Retic_sample"
+test_img_dir = f"{input_folder}/output_data"
+dst_path = f"{input_folder}/yolo-results_2"
+output_csv_path = f"{input_folder}/yolo-results_2.csv"
+output_json_path = f"{input_folder}/yolo-results_rbc_plt_coco_2.json"
 
 # Class and color mappings
-class_mapping = {"0": "plt", "1": "plt-clump", "2": "rbc", "3":"wbc"}
+class_mapping = {"0": "plt", "1": "plt-clump", "2": "rbc", "3":"rbc-ghost", "4":"wbc"}
+# class_mapping = {"0": "plt", "1": "plt-clump", "2": "rbc", "3":"wbc"}
+
 color_mapping = {
-    "0": (0, 255, 255),    # Yellow for plt
-    "1": (255, 0, 0),      # Blue for plt-clump
-    "2": (0, 0, 255),       # Red for rbc
-    "3": (0,255,0)          # Green for wbc
+    "0": (0, 255, 255),    
+    "1": (255, 0, 0),     
+    "2": (0, 0, 255),       
+    "3": (255,255,0),          
+    "4": (0,255,0)        
 }
 
 # Define class-wise confidence thresholds
 class_confidence_thresholds = {
     0: 0.0,  # Threshold for class 'plt'
     1: 0.0,  # Threshold for class 'plt-clump'
-    2: 0.0,   # Threshold for class 'rbc'
-    3: 0.0  #
+    2: 0.6,   # Threshold for class 'rbc'
+    3: 0.0, # Threshold for class 'rbc ghost'
+    4: 0.0  # Threshold for class 'wbc'
 }
 
 # YOLOX ONNX Wrapper Class
@@ -146,7 +150,8 @@ def save_prediction_to_coco_json(image_data, output_json_path):
             {"id": 1, "name": "plt", "supercategory": "cell"},
             {"id": 2, "name": "plt-clump", "supercategory": "cell"},
             {"id": 3, "name": "rbc", "supercategory": "cell"},
-            {"id": 4, "name": "wbc", "supercategory": "cell"}
+            {"id": 4, "name": "rbc ghost", "supercategory": "cell"},
+            {"id": 5, "name": "wbc", "supercategory": "cell"}
         ],
         "images": [],
         "annotations": []
@@ -249,7 +254,7 @@ def extract_cells():
                         continue 
 
                     box = [x, y, width, height, class_id]
-                    box1 = [x, y, width, height]
+                    box1 = [x, y, width, height, class_id, pred.score.value]
                     images.append(img_name)
                     box_info.append(box1)
                     area = width * height
@@ -292,3 +297,6 @@ end = time.time()
 print("Total execution time: ", end - start)
 
 
+# OUTput_Recon_data_130c50aa-b558-4660-ba6e-aee561ab4dfa 
+# OUTput_Recon_data_266ae3e8-cd33-48fe-9769-be653e2700f6
+# 

@@ -53,12 +53,11 @@
 #     print(f"Processed image {idx + 1}/{len(files)}: {img_name}")
 
 
-
 import cv2
 import os
 import numpy as np
-img_path = "/Users/bhavish/Documents/Plt_clump_and_plt_dual_plt/output_832"
-des_dir_extractor = "/Users/bhavish/Documents/Plt_clump_and_plt_dual_plt/recon_data_2_output_2x_416"
+img_path = "/Users/bhavish/Documents/Data_Retic_sample/Retic_data"
+des_dir_extractor = "/Users/bhavish/Documents/Data_Retic_sample/output_data_416x2"
 os.makedirs(des_dir_extractor, exist_ok=True)
 
 files = os.listdir(img_path)

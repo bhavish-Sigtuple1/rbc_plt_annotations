@@ -330,8 +330,8 @@ def compute_confusion_matrix(gt_path, pred_path, iou_threshold=0.5):
     return confusion_matrix, category_names
     
 
-gt_json_path = "/Users/bhavish/Downloads/GT_9f9d93ef-685b-4da3-95a1-d9e2a2ff3157-f54e4769-be67-44db-ad6a-3017d2a3e21a__12th__apr/ground_truth_result_real.json"
-pred_json_path = "/Users/bhavish/Downloads/GT_9f9d93ef-685b-4da3-95a1-d9e2a2ff3157-f54e4769-be67-44db-ad6a-3017d2a3e21a__12th__apr/yolo-results_rbc_plt_coco.json"
+gt_json_path = "/Users/bhavish/Downloads/Ground_Truth_2-at-2025-09-03-06-28-9c56b5fd/result.json"
+pred_json_path = "/Users/bhavish/Downloads/Ground_Truth_2-at-2025-09-03-06-28-9c56b5fd/yolo-results_rbc_plt_coco-iter.json"
 evaluate_predictions(gt_json_path, pred_json_path)
 print("-" * 80)
 evaluate_predictions_per_class(gt_json_path, pred_json_path)

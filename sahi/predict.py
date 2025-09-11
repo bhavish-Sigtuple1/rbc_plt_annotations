@@ -974,7 +974,7 @@ def get_sliced_prediction(
     overlap_height_ratio: float = 0.2,
     overlap_width_ratio: float = 0.2,
     perform_standard_pred: bool = True,
-    postprocess_type: str = "GREEDYNMM",
+    postprocess_type: str = "NMS", #'GREEDYNMM'
     postprocess_match_metric: str = "IOS",
     postprocess_match_threshold: float = 0.5,
     postprocess_class_agnostic: bool = False,

@@ -4,9 +4,9 @@ import os
 import numpy as np
 
 # Path to the directory containing images and the COCO JSON file
-img_dir = "/Users/bhavish/Desktop/rbc_plt_iter_8/train2017"   
-json_file = "/Users/bhavish/Desktop/rbc_plt_iter_8/annotations/val2017.json"
-                    
+img_dir = "/Users/bhavish/Downloads/rbc_iter_12-at-2025-09-15-05-59-98ccab21/images"   
+json_file = "/Users/bhavish/Downloads/rbc_iter_12-at-2025-09-15-05-59-98ccab21/result.json"
+# destination_dir = "/Users/bhavish/Desktop/rbc-plt_destination"
 # Load the COCO JSON data
 with open(json_file, "r") as f:
     coco_data = json.load(f)
@@ -15,8 +15,10 @@ with open(json_file, "r") as f:
 category_colors = {
     0: (0, 255, 255),       # Yellow for "plt"
     1: (255, 0, 0),         # Blue for "plt-clump"
-    2: (0, 0, 255),         # Red for "rbc"
-    3: (0,255,0)            # green for "wbc"
+    2: (0, 0, 255),         # rbc
+    3: (255,255,0),         # rbc-ghost
+    4: (255,0,255),         # rbc-nonspherical
+    5: (0,255,0)            # green for "wbc"
 }
 
 # Create a dictionary mapping category ID to name
@@ -61,5 +63,7 @@ for image_data in coco_data["images"]:
     # Display the annotated image
     cv2.imshow("Annotated Image", annotated_image)
     cv2.waitKey(0)  # Wait for a key press to close the image window
+    # file_name = os.path.join(destination_dir,file_name)
+    # cv2.imwrite(file_name,annotated_image)
 
 cv2.destroyAllWindows()

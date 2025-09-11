@@ -1,8 +1,8 @@
 import json
 
 # Path to your JSON file
-input_file = "/Users/bhavish/rbc_plt_annotations/train2017.json"
-output_file = "/Users/bhavish/rbc_plt_annotations/updated_train_2017.json"
+input_file = "/Users/bhavish/Documents/rbc_plt_iter_10/Data_for_Training/merged_train_2017.json"
+output_file = "/Users/bhavish/Documents/rbc_plt_iter_10/Data_for_Training/train2017.json"
 
 # Load the JSON data
 with open(input_file, 'r') as file:
