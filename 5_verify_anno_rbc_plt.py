@@ -4,8 +4,8 @@ import os
 import numpy as np
 
 # Path to the directory containing images and the COCO JSON file
-img_dir = "/Users/bhavish/Downloads/rbc_iter_12-at-2025-09-15-05-59-98ccab21/images"   
-json_file = "/Users/bhavish/Downloads/rbc_iter_12-at-2025-09-15-05-59-98ccab21/result.json"
+img_dir = "/Users/bhavish/Downloads/rbc_retic_iter_1-at-2025-09-15-09-45-80e9d1bf/images"   
+json_file = "/Users/bhavish/Downloads/rbc_retic_iter_1-at-2025-09-15-09-45-80e9d1bf/result.json"
 # destination_dir = "/Users/bhavish/Desktop/rbc-plt_destination"
 # Load the COCO JSON data
 with open(json_file, "r") as f:
