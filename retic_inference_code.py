@@ -110,8 +110,11 @@ class YOLOX_ONNX_SAHI_Wrapper(DetectionModel):
 
 # Function to draw bounding boxes
 def draw_bbox(org_img, bbox_start, bbox_end, class_id):
+    label = class_mapping[str(class_id)]
     color = color_mapping.get(str(class_id), (255, 255, 255))  
     cv2.rectangle(org_img, bbox_start, bbox_end, color, 1)
+    text_position = (bbox_start[0], bbox_start[1] - 5)
+    cv2.putText(org_img, label, text_position, cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1, cv2.LINE_AA)
 
 # Initialize model
 detection_model = YOLOX_ONNX_SAHI_Wrapper(model_path, 0.6, class_mapping, False, 416)

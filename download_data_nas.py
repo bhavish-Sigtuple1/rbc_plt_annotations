@@ -11,8 +11,8 @@ nas_user = "Sigtuple"
 nas_password = "Sigtuple@123"
 nas_password_encoded = urllib.parse.quote(nas_password)  # URL encode special characters
 nas_share = "Micro-POC"
-mount_root = "/Volumes/Micro-POC"
-target_subdir = "Sigvet_MicroPOC/SigVet_DS/HC_Devices_data/Mcv_data"
+mount_root = "/Volumes/Public"
+target_subdir = "Sigvet_DC/PD8"
 mount_point = os.path.join(mount_root, target_subdir)
 
 def is_mounted(): 
@@ -36,57 +36,55 @@ def mount_nas():
 mount_nas()
 
 # Load order IDs
-data = pd.read_excel('/imgarc/sigvet/Mcv_calculation/DATA_MCV/Combined_excels/HC3_output.xlsx')
-print(data.columns)
-csv_order_ids = []
-for x in data['Order ID'].tolist():
-    if str(x).strip() == 'nan':
-        continue
-    csv_order_ids.append(str(x).strip())
+order_ids = ["d51d5cac-8859-4221-af61-a3a3cc115f5d","12eac653-ec9a-4451-ab32-aafc7dfcf290"]
+
 
 data_path = mount_point
-destination_base = "/imgarc/sigvet/Mcv_calculation/DATA_MCV_HC3" # here the destination from the NAS
+destination_base = "/Users/bhavish/Downloads/destination_base" # here the destination from the NAS
 
 
+# Traverse NAS directories safely
+for accession_number in os.listdir(data_path):
+    accession_path = os.path.join(data_path, accession_number)
+    if not os.path.isdir(accession_path):
+        continue  # skip non-directories like .DS_Store
 
-for i, folder in enumerate(os.listdir(data_path)):
-    if len(os.listdir(os.path.join(data_path,folder)))>7:
-           print(folder)
-    print(i, folder)
-    if folder == "0fd596ca-09d8-495b-8e5b-2518cc1713f4":
-        continue
-    folder_path = os.path.join(data_path, folder)
-    if not os.path.isdir(folder_path):
-        print(f"Skipping {folder_path} as it is not a directory.")
-        continue
+    for sample_id in os.listdir(accession_path):
+        sample_id_path = os.path.join(accession_path, sample_id)
+        if not os.path.isdir(sample_id_path):
+            continue
 
-    print(f"Processing folder: {folder_path}")
-    for subfolder in os.listdir(folder_path):
-        if str(subfolder).strip() in csv_order_ids:
-            print(f"Processing order: {subfolder}")
-            subfolder_path = os.path.join(folder_path, subfolder)
-            
-            rbc_path = os.path.join(subfolder_path, "rbc")
-            if not os.path.isdir(rbc_path):
-                print(f"Skipping {rbc_path} as it does not exist.")
+        for date in os.listdir(sample_id_path):
+            date_path = os.path.join(sample_id_path, date)
+            if not os.path.isdir(date_path):
                 continue
 
-            recon_path = os.path.join(rbc_path, "Recon_data")
-            if not os.path.isdir(recon_path):
-                print(f"Skipping {recon_path} as it does not exist.")
-                continue
+            for tray_id in os.listdir(date_path):
+                tray_id_path = os.path.join(date_path, tray_id)
+                if not os.path.isdir(tray_id_path):
+                    continue
 
-            dest_folder = os.path.join(destination_base, subfolder)
-            os.makedirs(dest_folder, exist_ok=True)
+                for order_id in os.listdir(tray_id_path):
+                    order_id_path = os.path.join(tray_id_path, order_id)
+                    if not os.path.isdir(order_id_path):  
+                        continue  # skip files inside tray_id
 
-            for filename in os.listdir(recon_path):
-                src_file = os.path.join(recon_path, filename)
-                dst_file = os.path.join(dest_folder, filename)
-                if os.path.isfile(src_file):
-                    # print(f"Copying {src_file} to {dst_file}")
-                    shutil.copy(src_file, dst_file)
-                else:
-                    print(f"Skipping non-file {src_file}")
-        else:
-            print(f"Order {subfolder} not in order_id list, skipping.")
-            print(folder_path+"/"+subfolder)
+                    if order_id not in order_ids:
+                        continue
+
+                    recon_path = os.path.join(order_id_path, "rbc", "Recon_data")
+                    if not os.path.exists(recon_path):
+                        print(f"Recon_data not found for {order_id}")
+                        continue
+
+                    dest_folder = os.path.join(destination_base, order_id,"Recon_data")
+                    os.makedirs(dest_folder, exist_ok=True)
+
+                    for filename in os.listdir(recon_path):
+                        if filename.endswith(".pkl"):
+                            src_file = os.path.join(recon_path, filename)
+                            dst_file = os.path.join(dest_folder, filename)
+                            if os.path.isfile(src_file):
+                                shutil.copy(src_file, dst_file)
+                        else:
+                            continue
