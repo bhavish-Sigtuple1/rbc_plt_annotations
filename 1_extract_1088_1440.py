@@ -17,7 +17,7 @@ def find_I0(peak_dict):
             total_occurrences = sum(filtered_dict.values())
             if total_occurrences > 0:
                 weighted_avg_k = total_weighted_k / total_occurrences
-        
+                                                                                
     return weighted_avg_k
     
 def plot_channel_histogram(image):
@@ -40,8 +40,8 @@ def cal_I0_otsu_mapping(img):
     return np.sum(img * (binary / 255)) / np.count_nonzero(binary)
 
 
-img_path = '/Users/bhavish/Downloads/temp_data/Recon_data'
-des_dir_extractor = "/Users/bhavish/Downloads/temp_data/output_1088x1440"
+img_path = '/Users/bhavish/Downloads/plt_overpredicted_by_pd8_model/f0c846a8-9567-4e51-8210-ff0e2ff25579/Recon_data'
+des_dir_extractor = "/Users/bhavish/Downloads/plt_overpredicted_by_pd8_model/f0c846a8-9567-4e51-8210-ff0e2ff25579/output_1088x1440"
 os.makedirs(des_dir_extractor, exist_ok=True)
 
 all_files = os.listdir(img_path)

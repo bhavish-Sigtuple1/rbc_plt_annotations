@@ -13,8 +13,8 @@ from typing import Any, Dict, List, Optional
 
 # Model and directories
 model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_12.onnx"
-input_folder = "/Users/bhavish/Downloads/rbc_plt_iter_12"
-test_img_dir = f"{input_folder}/train2017"
+input_folder = "/Users/bhavish/Downloads/plt_overpredicted_by_pd8_model"
+test_img_dir = f"{input_folder}/plt_overpredicted_by_pd8_model"
 dst_path = f"{input_folder}/yolo-results_2"
 output_csv_path = f"{input_folder}/yolo-results_2.csv"
 output_json_path = f"{input_folder}/yolo-results_rbc_plt_coco_2.json"

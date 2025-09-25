@@ -6,7 +6,7 @@ def coco_to_label_studio_format(coco_json_path, output_json_path):
 
     label_studio_data = [] 
     # category_mapping = {0: "plt",1: "plt-clump",2: "rbc",3: "rbc-ghost",4: "wbc"}
-    category_mapping = {1: "plt",2: "plt-clump",3: "rbc",4: "rbc-ghost",5: "wbc"}
+    category_mapping = {1: "plt",2: "plt-clump",3: "rbc",4: "rbc-ghost",5:"rbc-nonspherical",6: "wbc"}
     for image_info in coco_json['images']:
         image_id = image_info['id']
         annotations_for_image = [ann for ann in coco_json['annotations'] if ann['image_id'] == image_id]
@@ -62,6 +62,6 @@ def coco_to_label_studio_format(coco_json_path, output_json_path):
     
     # return label_studio_data
 
-coco_annoation_path = "/Users/bhavish/Documents/Data_Retic_sample/yolo-results_rbc_plt_coco_2.json"
-coco_to_label_studio_format(coco_annoation_path, "/Users/bhavish/Documents/Data_Retic_sample/label_studio.json")
+coco_annoation_path = "/Users/bhavish/Downloads/plt_overpredicted_by_pd8_model/yolo-results_rbc_plt_coco_2.json"
+coco_to_label_studio_format(coco_annoation_path, "/Users/bhavish/Downloads/plt_overpredicted_by_pd8_model/label_studio.json")
 

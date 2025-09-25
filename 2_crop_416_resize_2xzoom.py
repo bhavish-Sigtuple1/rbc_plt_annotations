@@ -56,8 +56,8 @@
 import cv2
 import os
 import numpy as np
-img_path = "/Users/bhavish/Documents/Data_Retic_sample/Retic_data"
-des_dir_extractor = "/Users/bhavish/Documents/Data_Retic_sample/output_data_416x2"
+img_path = "/Users/bhavish/Downloads/plt_overpredicted_by_pd8_model/f0c846a8-9567-4e51-8210-ff0e2ff25579/output_1088x1440"
+des_dir_extractor = "/Users/bhavish/Downloads/plt_overpredicted_by_pd8_model/f0c846a8-9567-4e51-8210-ff0e2ff25579/output_data_416x2"
 os.makedirs(des_dir_extractor, exist_ok=True)
 
 files = os.listdir(img_path)
