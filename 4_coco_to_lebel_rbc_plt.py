@@ -12,7 +12,7 @@ def coco_to_label_studio_format(coco_json_path, output_json_path):
         annotations_for_image = [ann for ann in coco_json['annotations'] if ann['image_id'] == image_id]
         
         if annotations_for_image:
-            image_path = "/data/local-files/?d=output_data/" + image_info['file_name']
+            image_path = "/data/local-files/?d=rbc_ghost_and_nonpl_data_proj_1/" + image_info['file_name']
             results = []
             for annotation in annotations_for_image:
                 annotation_data = {
@@ -62,6 +62,6 @@ def coco_to_label_studio_format(coco_json_path, output_json_path):
     
     # return label_studio_data
 
-coco_annoation_path = "/Users/bhavish/Downloads/plt_overpredicted_by_pd8_model/yolo-results_rbc_plt_coco_2.json"
-coco_to_label_studio_format(coco_annoation_path, "/Users/bhavish/Downloads/plt_overpredicted_by_pd8_model/label_studio.json")
+coco_annoation_path = "/Users/bhavish/gcp_data/rbc_plt_iter_13/yolo-results_rbc_plt_coco.json"
+coco_to_label_studio_format(coco_annoation_path, "/Users/bhavish/gcp_data/rbc_plt_iter_13/label_studio.json")
 

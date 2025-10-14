@@ -10,18 +10,15 @@ from sahi.base import DetectionModel
 from yolox_onnx_inference import YOLOX_ONNX
 from sahi.predict import get_sliced_prediction
 from typing import Any, Dict, List, Optional
+import cv2, os, pickle
+from glob import glob
+import numpy as np
 
 # Model and directories
 model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_12.onnx"
-input_folder = "/Users/bhavish/gcp_data/rbc_plt_iter_13"
-test_img_dir = f"{input_folder}/rbc_ghost_and_nonpl_data_proj_1"
-dst_path = f"{input_folder}/yolo-results"
-output_csv_path = f"{input_folder}/yolo-results.csv"
-output_json_path = f"{input_folder}/yolo-results_rbc_plt_coco.json"
 
 # Class and color mappings
 class_mapping = {"0": "plt", "1": "plt-clump", "2": "rbc", "3":"rbc-ghost","4":"rbc-nonspherical" ,"5":"wbc"}
-# class_mapping = {"0": "plt", "1": "plt-clump", "2": "rbc", "3":"wbc"}
 
 color_mapping = {
     "0": (0, 255, 255),    
@@ -38,7 +35,7 @@ class_confidence_thresholds = {
     1: 0.0,  # Threshold for class 'plt-clump'
     2: 0.6,   # Threshold for class 'rbc'
     3: 0.0, # Threshold for class 'rbc ghost'
-    4: 0.0,
+    4: 0.0, # Threshold for class 'rbc-nonspherical'
     5: 0.0  # Threshold for class 'wbc'
 }
 
@@ -118,8 +115,6 @@ def draw_bbox(org_img, bbox_start, bbox_end, class_id):
 # Initialize model
 detection_model = YOLOX_ONNX_SAHI_Wrapper(model_path, 0.6, class_mapping, False, 416)
 
-# Create output directory if not exists
-os.makedirs(dst_path, exist_ok=True)
 
 scale = 1 / 1
 bbox_aspect_ratio_threshold = 1.75
@@ -127,8 +122,8 @@ bbox_aspect_ratio_threshold = 1.75
 # Function to save detection counts to CSV
 def save_detection_counts_to_csv(image_data, output_csv_path):
     # Define the header for the CSV
-    header = ['Image_Name', 'plt_count', 'plt-clump_count', 'rbc_count','rbc-nonspherical', 'wbc_count']
-    
+    header = ['Image_Name', 'plt_count', 'plt_clump_count', 'rbc_count','rbc_ghost_count', 'rbc_nonspherical_count','wbc_count']
+
     # Open the CSV file in write mode
     with open(output_csv_path, mode='w', newline='') as file:
         writer = csv.writer(file)
@@ -139,11 +134,103 @@ def save_detection_counts_to_csv(image_data, output_csv_path):
             plt_count = sum(1 for box in data['boxes'] if box[4] == 0)  # Count class 0 (plt)
             plt_clump_count = sum(1 for box in data['boxes'] if box[4] == 1)  # Count class 1 (plt-clump)
             rbc_count = sum(1 for box in data['boxes'] if box[4] == 2)  # Count class 2 (rbc)
-            wbc_count = sum(1 for box in data['boxes'] if box[4] == 3)  # Count class 3 (wbc)
-            writer.writerow([img_name, plt_count, plt_clump_count, rbc_count, wbc_count])
+            rbc_ghost_count = sum(1 for box in data['boxes'] if box[4] == 3)  # Count class 3 (rbc-ghost)
+            rbc_nonspherical_count = sum(1 for box in data['boxes'] if box[4] == 4)  # Count class 4 (rbc-nonspherical)
+            wbc_count = sum(1 for box in data['boxes'] if box[4] == 5)  # Count class 3 (wbc)
+            writer.writerow([img_name,plt_count,plt_clump_count,rbc_count,rbc_ghost_count,rbc_nonspherical_count,wbc_count])
+
+def find_I0(peak_dict):
+    weighted_avg_k = 0
+    possible_I0 = [i for i in peak_dict.keys()]
+    weighted_avg_k = 0
+    if len(possible_I0) == 0:
+        I0 = 'NA'
+    elif len(possible_I0) == 1:
+        I0 = possible_I0[0]
+    else:
+        filtered_dict = {k: v for k, v in peak_dict.items() if k <= 255 and k >= 128}
+        if filtered_dict:
+            total_weighted_k = sum(k * v for k, v in filtered_dict.items())
+            total_occurrences = sum(filtered_dict.values())
+            if total_occurrences > 0:
+                weighted_avg_k = total_weighted_k / total_occurrences
+                                                                                
+    return weighted_avg_k
+    
+def plot_channel_histogram(image):
+    hist = cv2.calcHist([image], [0], None, [256], [0, 256]).flatten()
+    # Peak detection using NumPy
+    peaks = np.where((hist[1:-1] > hist[:-2]) & (hist[1:-1] > hist[2:]))[0] + 1
+    filtered_peaks = [peaks[0]]
+    for peak in peaks[1:]:
+        if peak - filtered_peaks[-1] >= 10:
+            filtered_peaks.append(peak)
+    peak_dict = {peak: hist[peak] for peak in filtered_peaks}
+    I0 = find_I0(peak_dict)
+    return I0
+    
+def cal_I0_otsu_mapping(img):
+    img = np.uint8(img)
+    _, binary = cv2.threshold(img, 0, 140, cv2.THRESH_BINARY)
+    if np.count_nonzero(binary)==0:
+        return 255
+    return np.sum(img * (binary / 255)) / np.count_nonzero(binary)
+
+
+def pkltoimgconvert(img_path, des_dir_extractor):
+    all_files = os.listdir(img_path)
+    idx = 0
+    for pkl_file in all_files:
+        if pkl_file.endswith('.pkl'):
+            src_file = os.path.join(img_path, pkl_file)
+            print(src_file,'src_file')
+            with open(src_file, 'rb') as f:
+                pkl_data = pickle.load(f)
+            
+            fov = pkl_data.get('BestFocusedFalseColoredRBCImage')
+            wl_img = fov[:,:,0]
+            uv_img = fov[:,:,1]
+            wl_I0 = cal_I0_otsu_mapping(wl_img)
+            uv_I0 = cal_I0_otsu_mapping(uv_img)
+            ratio = uv_I0/wl_I0
+            wl_img = wl_img * ratio
+            wl_img[wl_img>(255)] = 255
+            false_colored_image = np.zeros((np.shape(uv_img)+ (3,)), dtype=np.uint8)
+            false_colored_image[:,:,0] = wl_img
+            false_colored_image[:,:,1] = uv_img
+            false_colored_image[:,:,2] = uv_img    
+
+            img = cv2.cvtColor(false_colored_image, cv2.COLOR_RGB2BGR)
+            img_name = os.path.basename(src_file)
+            
+            # cv2.imshow(fov,'img')
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
+            # Determine cropping coordinates (adjust as needed)
+            # crop_top, crop_bottom, crop_left, crop_right = 124, 956, 304, 1136
+            crop_top, crop_bottom = 0, img.shape[0]    # 0 to 1080
+            crop_left, crop_right = 0, img.shape[1]
+            
+            # Ensure the image is large enough
+            # if img.shape[0] < crop_bottom or img.shape[1] < crop_right:
+            #     print(f"Skipping {img_name} due to insufficient size.")
+            #     continue
+            
+            # Crop and place the image into a 832x832 canvas
+            cropped_image = img[crop_top:crop_bottom, crop_left:crop_right]
+            
+            # Create a blank image with desired dimensions
+            temp_img = np.zeros((1088, 1440, 3), dtype=img.dtype)
+            
+            temp_img[:cropped_image.shape[0], :cropped_image.shape[1]] = cropped_image
+            new_filename = f"{img_name[:-4]}_patch_{idx}.png"
+            cv2.imwrite(os.path.join(des_dir_extractor, new_filename), temp_img)
+            idx += 1
+            print(f"Processed {new_filename}")
+
 
 # Function to save prediction bbox and class to COCO JSON
-def save_prediction_to_coco_json(image_data, output_json_path):
+def save_prediction_to_coco_json(test_img_dir,image_data,output_json_path):
     # Prepare COCO JSON structure
     coco_json = {
         "info": {"description": "Generated Annotations"},
@@ -154,7 +241,7 @@ def save_prediction_to_coco_json(image_data, output_json_path):
             {"id": 3, "name": "rbc", "supercategory": "cell"},
             {"id": 4, "name": "rbc ghost", "supercategory": "cell"},
             {"id": 5, "name": "rbc-nonspherical","supercategory": "cell"},
-            {"id": 5, "name": "wbc", "supercategory": "cell"}
+            {"id": 6, "name": "wbc", "supercategory": "cell"}
         ],
         "images": [],
         "annotations": []
@@ -206,7 +293,7 @@ def save_prediction_to_coco_json(image_data, output_json_path):
     print(f"Total annotations: {len(coco_json['annotations'])}")
 
 # Function to extract cells and save results
-def extract_cells():
+def extract_cells(rbc_path,test_img_dir,dst_path,output_csv_path,output_json_path):
     count_1 = 0
     image_data = {}
     images = []
@@ -285,21 +372,69 @@ def extract_cells():
     print("Total Cells Detected: ", count_1)
     df = pd.DataFrame({'image': images,
                         'box_info': box_info})
-    df.to_csv(os.path.join(input_folder, "result_sample.csv"), index=False)
+    df.to_csv(os.path.join(rbc_path, "result_sample.csv"), index=False)
     return image_data
 
-# Main execution
-start = time.time()
-image_data = extract_cells() 
+def main():
+    input_folder = "/Users/bhavish/gcp_data"
+    main_csv_path = "/Users/bhavish/rbc_plt_annotations/GCP_DATA.csv"
+    summary = []
+    for folder in os.listdir(input_folder):
+        test_img_dir = os.path.join(input_folder, folder)
+        if not os.path.isdir(test_img_dir):
+            continue
+        # find order_id_path safely
+        order_id_path = None
+        for sub_folder in os.listdir(test_img_dir):
+            if sub_folder in ["MacroQCData", "micro_qc_data.pkl", "MicroQCData",".DS_Store"]:
+                continue
+            print(sub_folder, folder)
+            order_id_path = os.path.join(test_img_dir, sub_folder)
+            break  # take the first valid subfolder
+    #     if not order_id_path or not os.path.exists(order_id_path):
+    #         print(f"⚠️ Skipping {folder}, no valid order_id_path found")
+    #         continue
+    #     recon_data_path = os.path.join(order_id_path, "rbc", "Recon_data")
+    #     rbc_path = os.path.join(order_id_path, "rbc")
+    #     destination_folder_path = os.path.join(rbc_path, "output_1088x1440")
+    #     os.makedirs(destination_folder_path, exist_ok=True)
+    #     # ensure Recon_data exists
+    #     if os.path.exists(recon_data_path):
+    #         pkltoimgconvert(recon_data_path, destination_folder_path)
+    #     else:
+    #         print(f"⚠️ No Recon_data for {folder}, skipping conversion")
 
-save_detection_counts_to_csv(image_data, output_csv_path)
-save_prediction_to_coco_json(image_data, output_json_path)
+    #     dst_path = os.path.join(rbc_path, "yolo-results")
+    #     os.makedirs(dst_path, exist_ok=True)
+    #     output_csv_path = os.path.join(rbc_path, "yolo-results.csv")
+    #     output_json_path = os.path.join(rbc_path, "yolo-results_rbc_plt_coco.json")
+    #     image_data = extract_cells(rbc_path, destination_folder_path, dst_path, output_csv_path, output_json_path)
+    #     # process CSV only if it exists
+    #     save_detection_counts_to_csv(image_data, output_csv_path)
+    #     save_prediction_to_coco_json(destination_folder_path, image_data, output_json_path)
+    #     if not os.path.exists(output_csv_path):
+    #         print(f"⚠️ No output CSV for {folder}, skipping")
+    #         continue
+    #     data_frame = pd.read_csv(output_csv_path)
+    #     plt_total_count = data_frame["plt_count"].sum()
+    #     rbc_total_count = data_frame["rbc_count"].sum()
+    #     rbc_nonspherical_count = data_frame["rbc_nonspherical_count"].sum()
+    #     rbc_ghost_count = data_frame["rbc_ghost_count"].sum()
+    #     # save results
+    #     # add summary entry
+    #     summary.append({
+    #         "order_id": folder,
+    #         "plt_total_count": plt_total_count,
+    #         "rbc_total_count": rbc_total_count,
+    #         "rbc_nonspherical_count": rbc_nonspherical_count,
+    #         "rbc_ghost_count": rbc_ghost_count
+    #     })
+    # # save master summary
+    # summary_df = pd.DataFrame(summary)
+    # if not os.path.exists(main_csv_path):
+    #     summary_df.to_csv(main_csv_path, index=False)
+    # else:
+    #     summary_df.to_csv(main_csv_path, mode="a", header=False, index=False)
 
-end = time.time()
-
-print("Total execution time: ", end - start)
-
-
-# OUTput_Recon_data_130c50aa-b558-4660-ba6e-aee561ab4dfa 
-# OUTput_Recon_data_266ae3e8-cd33-48fe-9769-be653e2700f6
-# 
+if __name__ == "__main__":
+    main()
