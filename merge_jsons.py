@@ -53,15 +53,9 @@ def merge_coco_json(json_paths, output_path):
 
     print(f"Merged COCO JSON saved to {output_path}")
 
-
-
-json_paths = ["/Users/bhavish/Documents/rbc_plt_iter_10/Data_for_Training/High_tc_sample-at-2025-08-29-09-03-f459194e/result.json",
-              "/Users/bhavish/Documents/rbc_plt_iter_10/Data_for_Training/Iter_9_1_at-2025-08-25-05-39-524db2ed/result.json",
-              "/Users/bhavish/Documents/rbc_plt_iter_10/Data_for_Training/Iter_9_1_part2-at-2025-08-26-06-35-2de9bd18/result.json",
-              "/Users/bhavish/Documents/rbc_plt_iter_10/Data_for_Training/project_10-at-2025-08-28-06-30-53355d22/result.json"]
-
-output_path = "/Users/bhavish/Documents/rbc_plt_iter_10/Data_for_Training/merged_train_2017.json"
+json_paths = ["/Users/bhavish/Desktop/rbc_plt_iter_13/rbc_plt_iter_13_1/train2017.json",
+              "/Users/bhavish/Desktop/rbc_plt_iter_13/rbc_plt_iter_13_1/rbc_iter_13_spherical_cells_at-2025-10-28-07-27-8405469d/result.json"]
+output_path = "/Users/bhavish/Desktop/rbc_plt_iter_13/rbc_plt_iter_13_1/train_iter_13_1.json"
 
 merge_coco_json(json_paths, output_path)
-
 

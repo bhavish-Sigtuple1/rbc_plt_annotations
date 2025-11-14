@@ -12,9 +12,9 @@ from sahi.predict import get_sliced_prediction
 from typing import Any, Dict, List, Optional
 
 # Model and directories
-model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_12.onnx"
-input_folder = "/Users/bhavish/gcp_data/rbc_plt_iter_13"
-test_img_dir = f"{input_folder}/rbc_ghost_and_nonpl_data_proj_1"
+model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_13_2.onnx"
+input_folder = "/Users/bhavish/Desktop/rbc_ns_check"
+test_img_dir = f"{input_folder}/output_3b9942f"
 dst_path = f"{input_folder}/yolo-results"
 output_csv_path = f"{input_folder}/yolo-results.csv"
 output_json_path = f"{input_folder}/yolo-results_rbc_plt_coco.json"
@@ -36,9 +36,9 @@ color_mapping = {
 class_confidence_thresholds = {
     0: 0.0,  # Threshold for class 'plt'
     1: 0.0,  # Threshold for class 'plt-clump'
-    2: 0.6,   # Threshold for class 'rbc'
+    2: 0.0,   # Threshold for class 'rbc'
     3: 0.0, # Threshold for class 'rbc ghost'
-    4: 0.0,
+    4: 0.3,
     5: 0.0  # Threshold for class 'wbc'
 }
 
@@ -126,7 +126,7 @@ bbox_aspect_ratio_threshold = 1.75
 
 # Function to save detection counts to CSV
 def save_detection_counts_to_csv(image_data, output_csv_path):
-    # Define the header for the CSV
+    # Define the header for the CSV 
     header = ['Image_Name', 'plt_count', 'plt-clump_count', 'rbc_count','rbc-nonspherical', 'wbc_count']
     
     # Open the CSV file in write mode
@@ -154,7 +154,7 @@ def save_prediction_to_coco_json(image_data, output_json_path):
             {"id": 3, "name": "rbc", "supercategory": "cell"},
             {"id": 4, "name": "rbc ghost", "supercategory": "cell"},
             {"id": 5, "name": "rbc-nonspherical","supercategory": "cell"},
-            {"id": 5, "name": "wbc", "supercategory": "cell"}
+            {"id": 6, "name": "wbc", "supercategory": "cell"}
         ],
         "images": [],
         "annotations": []

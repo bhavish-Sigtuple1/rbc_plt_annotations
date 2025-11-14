@@ -11,31 +11,33 @@ from sahi.predict import get_sliced_prediction
 from typing import Any, Dict, List, Optional
 
 # Model and directories
-model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_9_1.onnx"
-input_folder = "/Users/bhavish/Desktop/temp_analyzer_data_plt_check/eb8b02dd-c5c8-4638-ab04-035f32ab534e"
+model_path = "/Users/bhavish/rbc_plt_annotations/rbc_plt_annotations/Models/rbc_plt_iter_13_2.onnx"
+input_folder = "/Users/bhavish/Downloads/temp_data"
 test_img_dir = f"{input_folder}/output_1088x1440"
-dst_path = f"{input_folder}/yolo-results"
-output_csv_path = f"{input_folder}/yolo-result.csv"
-output_json_path = f"{input_folder}/yolo-results_rbc_plt_coco-iter.json"
+dst_path = f"{input_folder}/yolo-results_13"
+output_csv_path = f"{input_folder}/yolo-result_13.csv"
+output_json_path = f"{input_folder}/yolo-results_rbc_plt_coco-iter_13.json"
 
 # Class and color mappings 
 # class_mapping = {"0": "plt", "1": "plt-clump", "2": "rbc", "3":"rbc-ghost", "4":"wbc"}
-class_mapping = {"0": "plt", "1": "plt-clump", "2": "rbc","3":"wbc"}
+class_mapping = {"0": "plt", "1": "plt-clump", "2": "rbc", "3":"rbc-ghost","4":"rbc-nonspherical" ,"5":"wbc"}
 color_mapping = {
     "0": (0, 255, 255),    
     "1": (255, 0, 0),     
     "2": (0, 0, 255),       
-    # "3": (255,255,0),          
-    "3": (0,255,0)        
+    "3": (255,255,0),
+    "4": (255,0,255),          
+    "5": (0,255,0)      
 }
 
 # Define class-wise confidence thresholds
 class_confidence_thresholds = {
     0: 0.0,  # Threshold for class 'plt'
     1: 0.0,  # Threshold for class 'plt-clump'
-    2: 0.6,   # Threshold for class 'rbc'
-    # 3: 0.0, # Threshold for class 'rbc ghost'
-    3: 0.0  # Threshold for class 'wbc'
+    2: 0.0,   # Threshold for class 'rbc'
+    3: 0.0, # Threshold for class 'rbc ghost'
+    4: 0.3,
+    5: 0.0  # Threshold for class 'wbc'
 }
 
 # YOLOX ONNX Wrapper Class
@@ -148,8 +150,9 @@ def save_prediction_to_coco_json(image_data, output_json_path):
             {"id": 0, "name": "plt", "supercategory": "cell"},
             {"id": 1, "name": "plt-clump", "supercategory": "cell"},
             {"id": 2, "name": "rbc", "supercategory": "cell"},
-            # {"id": 3, "name": "rbc ghost", "supercategory": "cell"},
-            {"id": 3, "name": "wbc", "supercategory": "cell"}
+            {"id": 3, "name": "rbc ghost", "supercategory": "cell"},
+            {"id": 4, "name": "rbc-nonspherical","supercategory": "cell"},
+            {"id": 5, "name": "wbc", "supercategory": "cell"}
         ],
         "images": [],
         "annotations": []

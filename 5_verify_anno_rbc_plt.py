@@ -4,14 +4,14 @@ import os
 import numpy as np
 
 # Path to the directory containing images and the COCO JSON file
-img_dir = "/Users/bhavish/Downloads/rbc_retic_iter_1-at-2025-09-15-09-45-80e9d1bf/images"   
-json_file = "/Users/bhavish/Downloads/rbc_retic_iter_1-at-2025-09-15-09-45-80e9d1bf/result.json"
+img_dir = "/Users/bhavish/Desktop/rbc_plt_iter_13/rbc_plt_iter_13_1/train2017"   
+json_file = "/Users/bhavish/Desktop/rbc_plt_iter_13/rbc_plt_iter_13_1/annotations/train2017.json"
 # destination_dir = "/Users/bhavish/Desktop/rbc-plt_destination"
 # Load the COCO JSON data
 with open(json_file, "r") as f:
     coco_data = json.load(f)
 
-# Define a color map for different categories
+# Define a color map for different categories 
 category_colors = {
     0: (0, 255, 255),       # Yellow for "plt"
     1: (255, 0, 0),         # Blue for "plt-clump"
@@ -21,7 +21,7 @@ category_colors = {
     5: (0,255,0)            # green for "wbc"
 }
 
-# Create a dictionary mapping category ID to name
+# Create a dictionary mapping category ID to 
 category_names = {category["id"]: category["name"] for category in coco_data["categories"]}
 
 # Function to visualize annotations on images
@@ -67,3 +67,6 @@ for image_data in coco_data["images"]:
     # cv2.imwrite(file_name,annotated_image)
 
 cv2.destroyAllWindows()
+
+
+

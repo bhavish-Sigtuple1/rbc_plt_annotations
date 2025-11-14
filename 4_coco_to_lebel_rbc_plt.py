@@ -5,14 +5,14 @@ def coco_to_label_studio_format(coco_json_path, output_json_path):
         coco_json = json.load(f)
 
     label_studio_data = [] 
-    # category_mapping = {0: "plt",1: "plt-clump",2: "rbc",3: "rbc-ghost",4: "wbc"}
     category_mapping = {1: "plt",2: "plt-clump",3: "rbc",4: "rbc-ghost",5:"rbc-nonspherical",6: "wbc"}
+    # category_mapping = {1: "plt",2: "plt-clump",3: "rbc",4: "rbc-ghost",5:"rbc-nonspherical",6: "wbc"}
     for image_info in coco_json['images']:
         image_id = image_info['id']
         annotations_for_image = [ann for ann in coco_json['annotations'] if ann['image_id'] == image_id]
         
         if annotations_for_image:
-            image_path = "/data/local-files/?d=rbc_ghost_and_nonpl_data_proj_1/" + image_info['file_name']
+            image_path = "/data/local-files/?d=data/" + image_info['file_name']
             results = []
             for annotation in annotations_for_image:
                 annotation_data = {
@@ -25,18 +25,18 @@ def coco_to_label_studio_format(coco_json_path, output_json_path):
                     "image_rotation": 0,
                     "value": {
                         "rotation": 0,
-                        # "x": (((annotation['bbox'][0]) / 1440) * 100)+0,  # Convert pixel to percentage
-                        # "y": (((annotation['bbox'][1]) / 1088) * 100)+0,  # Convert pixel to percentage
-                        # "width": ((annotation['bbox'][2]) / 1440) * 100,  # Convert pixel to percentage
-                        # "height": ((annotation['bbox'][3]) / 1088) * 100,  # Convert pixel to percentage
+                        "x": (((annotation['bbox'][0]) / 1440) * 100)+0,  # Convert pixel to percentage
+                        "y": (((annotation['bbox'][1]) / 1088) * 100)+0,  # Convert pixel to percentage
+                        "width": ((annotation['bbox'][2]) / 1440) * 100,  # Convert pixel to percentage
+                        "height": ((annotation['bbox'][3]) / 1088) * 100,  # Convert pixel to percentage
                         # "x": (((annotation['bbox'][0]) / 416) * 100)+0,  # Convert pixel to percentage
                         # "y": (((annotation['bbox'][1]) / 416) * 100)+0,  # Convert pixel to percentage
                         # "width": ((annotation['bbox'][2]) / 416) * 100,  # Convert pixel to percentage
                         # "height": ((annotation['bbox'][3]) / 416) * 100,  # Convert pixel to percentage
-                        "x": ((annotation['bbox'][0]) / 416) * 100,  # Convert pixel to percentage
-                        "y": ((annotation['bbox'][1]) / 416) * 100,  # Convert pixel to percentage
-                        "width": ((annotation['bbox'][2]) / 416) * 100,  # Convert pixel to percentage
-                        "height": ((annotation['bbox'][3]) / 416) * 100,  # Convert pixel to percentage
+                        # "x": ((annotation['bbox'][0]) / 416) * 100,  # Convert pixel to percentage
+                        # "y": ((annotation['bbox'][1]) / 416) * 100,  # Convert pixel to percentage
+                        # "width": ((annotation['bbox'][2]) / 416) * 100,  # Convert pixel to percentage
+                        # "height": ((annotation['bbox'][3]) / 416) * 100,  # Convert pixel to percentage
                         #"rectanglelabels": ["rbc"]
                         "rectanglelabels": [category_mapping[annotation['category_id']]]
                     }
@@ -62,6 +62,6 @@ def coco_to_label_studio_format(coco_json_path, output_json_path):
     
     # return label_studio_data
 
-coco_annoation_path = "/Users/bhavish/gcp_data/rbc_plt_iter_13/yolo-results_rbc_plt_coco.json"
-coco_to_label_studio_format(coco_annoation_path, "/Users/bhavish/gcp_data/rbc_plt_iter_13/label_studio.json")
+coco_annoation_path = "/Users/bhavish/Downloads/Gt_Rbc_PLT_iter_13_2-at-2025-11-03-08-41-3d1dfc74/yolo-results_rbc_plt_coco-iter_13_2.json"
+coco_to_label_studio_format(coco_annoation_path, "/Users/bhavish/Downloads/Gt_Rbc_PLT_iter_13_2-at-2025-11-03-08-41-3d1dfc74/GT_json_13_2.json")
 
